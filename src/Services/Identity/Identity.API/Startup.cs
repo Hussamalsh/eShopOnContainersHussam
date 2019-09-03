@@ -38,13 +38,6 @@ namespace Identity.API
         {
             var connectionString = Configuration["ConnectionString"];
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration["ConnectionString"],
@@ -159,7 +152,6 @@ namespace Identity.API
             });
 
             app.UseStaticFiles();
-            app.UseCookiePolicy();
 
             // Make work identity server redirections in Edge and lastest versions of browers. WARN: Not valid in a production environment.
             app.Use(async (context, next) =>

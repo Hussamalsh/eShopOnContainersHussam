@@ -231,6 +231,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "basketswaggerui",
                     ClientName = "Basket Swagger UI",
+                    ClientUri = $"{clientsUrl["BasketApi"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 

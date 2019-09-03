@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Identity.API.Configuration;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
@@ -25,6 +26,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
     /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
     /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
     /// </summary>
+    [SecurityHeaders]
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         //private readonly InMemoryUserLoginService _loginService;
