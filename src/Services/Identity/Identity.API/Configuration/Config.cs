@@ -249,7 +249,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     ClientName = "Ordering Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-
+                    ClientUri = $"{clientsUrl["OrderingApi"]}", // public uri of the client
                     RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
 

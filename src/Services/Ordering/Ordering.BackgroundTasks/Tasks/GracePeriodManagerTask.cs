@@ -13,8 +13,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.BackgroundTasks.Tasks
 {
-    public class GracePeriodManagerService
-         : BackgroundService
+    public class GracePeriodManagerService : BackgroundService
     {
         private readonly ILogger<GracePeriodManagerService> _logger;
         private readonly BackgroundTaskSettings _settings;

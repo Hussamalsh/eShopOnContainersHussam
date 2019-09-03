@@ -21,6 +21,22 @@ namespace Ordering.API
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    if (context.HostingEnvironment.IsProduction())
+                    {
+                        var builtConfig = config.Build();
+
+                        if (builtConfig.GetValue<bool>("UseVault", false))
+                        {
+                            config.AddAzureKeyVault(
+                                $"https://{builtConfig["Vault:Name"]}.vault.azure.net/",
+                                builtConfig["Vault:ClientId"],
+                                builtConfig["Vault:ClientSecret"]);
+                        }
+                    }
+                });
     }
 }

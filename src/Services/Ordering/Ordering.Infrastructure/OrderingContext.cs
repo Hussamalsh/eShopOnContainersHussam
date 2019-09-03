@@ -125,7 +125,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         public OrderingContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
-                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
+                .UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=OrderingDb;Trusted_Connection=True;MultipleActiveResultSets=True");
 
             return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }

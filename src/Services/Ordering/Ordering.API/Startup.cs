@@ -23,6 +23,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.Services.Ordering.API;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
@@ -141,6 +142,21 @@ namespace Ordering.API
 
             app.UseAuthentication();
         }
+
+        private void InitializeDatabase(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var settings = serviceScope.ServiceProvider.GetRequiredService<IOptions<OrderingSettings>>();
+                var logger = serviceScope.ServiceProvider.GetRequiredService<ILogger<OrderingContextSeed>>();
+
+                var context = serviceScope.ServiceProvider.GetRequiredService<OrderingContext>();
+
+                OrderingContextSeed configurationDbContextSeed = new OrderingContextSeed();
+                configurationDbContextSeed.SeedAsync(context, env, settings, logger).Wait();
+            }
+        }
+
     }
 
     static class CustomExtensionsMethods
@@ -269,8 +285,8 @@ namespace Ordering.API
                 {
                     Type = "oauth2",
                     Flow = "implicit",
-                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrl")}/connect/authorize",
+                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrl")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
                         { "orders", "Ordering API" }
